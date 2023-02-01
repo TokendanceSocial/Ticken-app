@@ -1,0 +1,41 @@
+{
+  "presets": [
+    [
+      "@babel/preset-react"
+    ],
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "browsers": [
+            ">0.25%",
+            "not ie 11",
+            "not op_mini all"
+          ]
+        }
+      }
+    ],
+    [
+      "@babel/preset-typescript",
+      {
+        "isTSX": true,
+        "allExtensions": true
+      }
+    ]
+  ],
+  "plugins": [
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        "legacy": true
+      }
+    ],
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "corejs": 3,
+        "regenerator": true
+      }
+    ]
+  ]
+}
