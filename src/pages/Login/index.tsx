@@ -13,7 +13,7 @@ const Login: React.FC = () => {
   const [loginVisiable, setLoginVisiable] = useState(false);
   const navigator = useNavigate();
   const connectButton = () => {
-    if (isDisconnected) {
+    if (!isDisconnected) {
       navigator('/list');
     }
     connect({
@@ -21,9 +21,11 @@ const Login: React.FC = () => {
     });
   };
   useEffect(() => {
+    if (!isDisconnected) {
+      navigator('/list');
+    }
     setLoginVisiable(false);
-    navigator('/list');
-  }, [address, navigator]);
+  }, [address, isDisconnected, navigator]);
   return (
     <div className={styles.container}>
       <div className={styles.title}>

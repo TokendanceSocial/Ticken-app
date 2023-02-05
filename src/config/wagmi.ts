@@ -1,6 +1,5 @@
 import { createClient, configureChains, mainnet } from 'wagmi';
-
-import { alchemyProvider } from 'wagmi/providers/alchemy';
+import { arbitrum, optimism, polygon } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
@@ -8,8 +7,8 @@ import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 // Configure chains & providers with the Alchemy provider.
 // Two popular providers are Alchemy (alchemy.com) and Infura (infura.io)
 const { chains, provider, webSocketProvider } = configureChains(
-  [mainnet],
-  [alchemyProvider({ apiKey: 'yourAlchemyApiKey' }), publicProvider()]
+  [mainnet, polygon, optimism, arbitrum],
+  [publicProvider()]
 );
 export const client: unknown = createClient({
   autoConnect: true,
