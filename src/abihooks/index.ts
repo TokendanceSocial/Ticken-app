@@ -26,7 +26,6 @@ export function useFetchEventDetail() {
 export function useEventList() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return useAbi<EventInfo.AllInfoStructOutput[], any>((provide, _singer, account) => {
-    console.log(provide, account.address);
     const connect = Admin__factory.connect(CONTRACT_ADDRESS, provide);
     return connect.eventsForUser(account.address);
   });

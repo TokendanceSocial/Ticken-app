@@ -11,7 +11,7 @@ function isAuthenticated(address) {
 // eslint-disable-next-line react/prop-types, @typescript-eslint/no-unused-vars
 const ProtectedRoute = ({ children }) => {
   const { address } = useAccount();
-  console.log();
+
   if (!isAuthenticated(address)) {
     return <Navigate to="/login" />;
   }
