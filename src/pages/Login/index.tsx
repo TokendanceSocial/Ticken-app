@@ -21,7 +21,7 @@ const Login: React.FC = () => {
     });
   };
   useEffect(() => {
-    if (!isDisconnected) {
+    if (!isDisconnected && address) {
       navigator('/list');
     }
     setLoginVisiable(false);

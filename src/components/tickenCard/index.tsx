@@ -6,19 +6,19 @@ import whereIcon from '../.././assert/where.png';
 import whenIcon from '../.././assert/when.png';
 import dayjs from 'dayjs';
 import { EventInfo } from '@/typechain-types/contracts/Admin';
-import { useAccount } from 'wagmi';
 import { getMeta, renderNftImg } from '@/utils';
 import { useNavigate } from 'react-router-dom';
+import { useAccount } from 'wagmi';
 
 const TickenCard: FC<{ item: EventInfo.AllInfoStructOutput }> = ({ item }) => {
-  const { address } = useAccount();
   const navigate = useNavigate();
+  const { address } = useAccount();
   const [meta, setMeta] = useState<any>({});
 
   const params = {
     tid: item.basic.contractAddress,
-    cid: address,
-    mode: 'ticket'
+    mode: 'detail',
+    cid: address
   };
 
   const handleClick = () => {

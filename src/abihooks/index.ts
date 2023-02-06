@@ -3,12 +3,12 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 import { Provider } from '@ethersproject/providers';
 import { Toast } from 'antd-mobile';
-import { ContractTransaction } from 'ethers/lib/ethers';
 import { useState, useCallback } from 'react';
 import { useProvider, useAccount, useSigner } from 'wagmi';
 import { CONTRACT_ADDRESS } from '@/constanst/token';
 import { EventInfo } from '@/typechain-types/contracts/Admin';
 import { Admin__factory, Event__factory } from '@/typechain-types/index';
+import { ContractTransaction } from 'ethers';
 
 export interface fetchEventDetailReq {
   eventAddress: string;
@@ -30,52 +30,31 @@ export function useEventList() {
     return connect.eventsForUser(account.address);
   });
 }
-export interface createEventReq {
-  name: string; // 名称
-  symbol: string; // 活动缩写
-  holdTime: number; // 时间
-  personLimit?: number; // 人数限制
-  price: number; // 价格
-  rebates?: number; // 返佣比例
-  meta: string; // 元数据
-  receiver: string; // 返佣收款人（填写创建者地址）
-  eventType: 0 | 1; // 如0为公售，1为仅限邀请
-}
-export function useCreateEvent() {
-  // 创建活动
-  return useAbi<ContractTransaction, createEventReq>((_provide, singer: any, _account, _: any) => {
-    const connect = Admin__factory.connect(CONTRACT_ADDRESS, singer);
-    return connect.createEvent(
-      _.name,
-      _.symbol,
-      _.holdTime,
-      _.personLimit,
-      _.price,
-      _.rebates,
-      _.meta,
-      _.receiver,
-      _.eventType
-    );
-  });
-}
 
-export function useCloseEvent() {
-  // 关闭活动
-  return useAbi<ContractTransaction, string>((_provide, singer, _account, _?: any) => {
-    const connect = Event__factory.connect(_, singer);
-    return connect.closeEvent();
-  });
-}
-
-export interface addWriteOffReq {
+// invite
+export interface MintReq {
   eventAddress: string;
-  address: string[];
+  address: string;
 }
-export function useAddWriteOff() {
-  // 批量增加核销人
-  return useAbi<ContractTransaction, addWriteOffReq>((_provide, singer, _account, _?: any) => {
-    const connect = Event__factory.connect(_.eventAddress, singer);
-    return connect.batchAddSigner(_.address);
+export function useEventMint() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return useAbi<ContractTransaction, MintReq>((provide, _singer, account, _) => {
+    const connect = Event__factory.connect(_.eventAddress, provide);
+    return connect.ownerMint(account.address);
+  });
+}
+
+// sign
+
+export interface SignReq {
+  eventAddress: string;
+  address: string;
+}
+export function useSign() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return useAbi<ContractTransaction, SignReq>((provide, _singer, account, _) => {
+    const connect = Event__factory.connect(_.eventAddress, provide);
+    return connect.sign(account.address);
   });
 }
 

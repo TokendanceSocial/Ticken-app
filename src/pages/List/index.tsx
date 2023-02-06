@@ -2,7 +2,7 @@
 import { useEventList } from '@/abihooks';
 import { Toast } from 'antd-mobile';
 import React, { useEffect } from 'react';
-import { useProvider } from 'wagmi';
+
 import InviteAvatar from '../../assert/invite_avatar.png';
 import Avatar from '../../assert/invite-avatar.png';
 import styles from './inde.module.scss';
@@ -12,7 +12,6 @@ import TickenCard from '@/components/tickenCard';
 const List: React.FC = () => {
   const { data: list = [], run } = useEventList();
   const { address = '' } = useAccount();
-  const provide = useProvider();
   useEffect(() => {
     run();
   }, []);

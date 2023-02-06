@@ -3,6 +3,7 @@ import Login from '@/pages/Login';
 import React from 'react';
 import { useAccount } from 'wagmi';
 const List = React.lazy(() => import('@/pages/List'));
+const Detail = React.lazy(() => import('@/pages/Detail'));
 import { Navigate } from 'react-router-dom';
 
 function isAuthenticated(address) {
@@ -33,7 +34,7 @@ const routes = [
       },
       {
         path: '/detail',
-        element: <List />
+        element: <Detail />
       }
     ]
   },
