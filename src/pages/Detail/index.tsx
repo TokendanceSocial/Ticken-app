@@ -9,7 +9,7 @@ import Where from '@/assert/where.png';
 import When from '@/assert/when.png';
 import styles from './index.module.scss';
 import { useAccount } from 'wagmi';
-import { useFetchEventDetail, useEventMint, useSign } from '@/abihooks';
+import { useFetchEventDetail, useEventMint, useSign, useIsSign } from '@/abihooks';
 import { getMeta, renderNftImg } from '@/utils';
 import { Button, Dialog, Toast } from 'antd-mobile';
 import { useNavigate } from 'react-router-dom';
@@ -22,6 +22,7 @@ const Detail: React.FC = () => {
   const { data, run } = useFetchEventDetail();
   const { run: mint } = useEventMint();
   const { run: sign } = useSign();
+  const { data: isSigned = false, run: isSignRun } = useIsSign();
   const search = querystring.parse(window.location.href.split('?')[1]);
   const tid: string = (search?.tid as string) || '0x7eEC270e6ddAF482ada1453f501CB5CBE9A511Eb'; //票id
   const cid: string = (search?.cid as string) || '0x7eEC270e6ddAF482ada1453f501CB5CBE9A511Eb'; //分享人id
@@ -32,7 +33,8 @@ const Detail: React.FC = () => {
   const _fissionMint = () => {
     mint({
       eventAddress: tid,
-      address: cid
+      address: cid,
+      price: data?.basic?.price
     }).then(() => {
       Toast.show({
         icon: 'success',
@@ -73,6 +75,12 @@ const Detail: React.FC = () => {
       eventAddress: tid,
       address: address
     });
+    setInterval(() => {
+      isSignRun({
+        eventAddress: tid,
+        address: address
+      });
+    }, 500);
   }, []);
   useEffect(() => {
     const getMetaData = async () => {
@@ -90,7 +98,7 @@ const Detail: React.FC = () => {
     <div className={styles.container}>
       <div className={styles.header}>
         <h1>{data?.basic?.name || 'Ticken'}</h1>
-        {data?.user?.isSigned && <div className={styles.written}>written off</div>}
+        {isSigned && <div className={styles.written}>written off</div>}
         <img
           className={styles.bg_title}
           src={data?.basic?.metaURL && renderNftImg((metaData as any)?.image || '')}
@@ -98,7 +106,7 @@ const Detail: React.FC = () => {
         />
         <div>
           <div className={styles.title}>
-            {!data?.user?.isSigned && mode === 'detail' && (
+            {!isSigned && mode === 'detail' && (
               <img onClick={genQrCode} width={20} height={20} src={qrCode} alt="" />
             )}
           </div>
@@ -129,7 +137,7 @@ const Detail: React.FC = () => {
       <div className={styles.tokenInfo}>
         <p>
           <label>Creator</label>
-          <span className={styles.elc}>{data?.user?.tokenId?.toString() || '-'}</span>
+          <span className={styles.elc}>{data?.basic?.creator || '-'}</span>
         </p>
         <p>
           <label>Token Standard</label>
@@ -161,7 +169,7 @@ const Detail: React.FC = () => {
         }
         {
           // 可以加入&没有登记过
-          mode === 'sign' && data?.user?.isSigned && (
+          mode === 'sign' && isSigned && (
             <p className={styles.signTip}>The other party has already registered</p>
           )
         }

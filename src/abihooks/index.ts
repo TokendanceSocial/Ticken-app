@@ -8,7 +8,7 @@ import { useProvider, useAccount, useSigner } from 'wagmi';
 import { CONTRACT_ADDRESS } from '@/constanst/token';
 import { EventInfo } from '@/typechain-types/contracts/Admin';
 import { Admin__factory, Event__factory } from '@/typechain-types/index';
-import { ContractTransaction } from 'ethers';
+import { BigNumber, ContractTransaction } from 'ethers';
 
 export interface fetchEventDetailReq {
   eventAddress: string;
@@ -35,12 +35,15 @@ export function useEventList() {
 export interface MintReq {
   eventAddress: string;
   address: string;
+  price: BigNumber;
 }
 export function useEventMint() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return useAbi<ContractTransaction, MintReq>((provide, _singer, account, _) => {
     const connect = Event__factory.connect(_.eventAddress, provide);
-    return connect.ownerMint(account.address);
+    return connect.inviteMint(account.address, _.address, {
+      value: _.price
+    });
   });
 }
 
@@ -54,7 +57,20 @@ export function useSign() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return useAbi<ContractTransaction, SignReq>((provide, _singer, account, _) => {
     const connect = Event__factory.connect(_.eventAddress, provide);
-    return connect.sign(account.address);
+    return connect.sign(_.address);
+  });
+}
+
+// isSign
+export interface isSignReq {
+  eventAddress: string;
+  address: string;
+}
+export function useIsSign() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return useAbi<boolean, SignReq>((provide, _singer, _account, _) => {
+    const connect = Event__factory.connect(_.eventAddress, provide);
+    return connect.isSign(_.address);
   });
 }
 
