@@ -59,9 +59,7 @@ const Detail: React.FC = () => {
   };
   const copyInvite = () => {
     const url =
-      window.location.origin +
-      window.location.pathname +
-      `#/qrcode?mode=mint&tid=${tid}&cid=${address}`;
+      window.location.origin + window.location.pathname + `?mode=mint&tid=${tid}&cid=${address}`;
     Dialog.alert({
       content: <p style={{ padding: '10px', wordBreak: 'break-all' }}>{url}</p>,
       confirmText: 'close',
@@ -71,15 +69,18 @@ const Detail: React.FC = () => {
     });
   };
   useEffect(() => {
+    // 查看对应用户的信息状态，我进来看我的，别人进来查看别人的
     run({
       eventAddress: tid,
-      address: address
+      address: cid
     });
     setInterval(() => {
-      isSignRun({
-        eventAddress: tid,
-        address: address
-      });
+      if (data?.user?.tokenId) {
+        isSignRun({
+          eventAddress: tid,
+          tokenId: data?.user?.tokenId
+        });
+      }
     }, 500);
   }, []);
   useEffect(() => {
@@ -91,9 +92,7 @@ const Detail: React.FC = () => {
   }, [data?.basic?.metaURL]);
 
   const qrUrl =
-    window.location.origin +
-    window.location.pathname +
-    `/detail?mode=sign&tid=${tid}&cid=${address}`;
+    window.location.origin + window.location.pathname + `?mode=sign&tid=${tid}&cid=${address}`;
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -173,7 +172,7 @@ const Detail: React.FC = () => {
             <p className={styles.signTip}>The other party has already registered</p>
           )
         }
-        {mode === 'ticket' && data?.user?.canInvite && (
+        {mode === 'detail' && data?.user?.canInvite && (
           <Button onClick={copyInvite} block color="primary" size="large">
             Invite
           </Button>
@@ -182,7 +181,8 @@ const Detail: React.FC = () => {
       <Dialog
         visible={visible}
         style={{
-          width: 300
+          width: 300,
+          background: 'white'
         }}
         content={
           <div>

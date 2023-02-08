@@ -2,6 +2,10 @@
   margin: 0;
   padding: 0;
 }
-.app {
-  color: red;
+body {
+  :global {
+    .adm-dialog-body {
+      background: white;
+    }
+  }
 }

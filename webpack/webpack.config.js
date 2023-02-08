@@ -63,7 +63,7 @@ module.exports = {
       cache: true
     }),
     new HtmlWebpackPlugin({
-      title: '这是一个网站',
+      title: 'Ticken',
       template: './public/index.html',
       publicPath: process.env.NODE_ENV === 'production' ? './' : '/'
     }),

@@ -40,7 +40,7 @@ export interface MintReq {
 export function useEventMint() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return useAbi<ContractTransaction, MintReq>((provide, _singer, account, _) => {
-    const connect = Event__factory.connect(_.eventAddress, provide);
+    const connect = Event__factory.connect(_.eventAddress, _singer);
     return connect.inviteMint(account.address, _.address, {
       value: _.price
     });
@@ -55,8 +55,8 @@ export interface SignReq {
 }
 export function useSign() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return useAbi<ContractTransaction, SignReq>((provide, _singer, account, _) => {
-    const connect = Event__factory.connect(_.eventAddress, provide);
+  return useAbi<ContractTransaction, SignReq>((_provide, _singer, _account, _) => {
+    const connect = Event__factory.connect(_.eventAddress, _singer);
     return connect.sign(_.address);
   });
 }
@@ -64,13 +64,13 @@ export function useSign() {
 // isSign
 export interface isSignReq {
   eventAddress: string;
-  address: string;
+  tokenId: BigNumber;
 }
 export function useIsSign() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return useAbi<boolean, SignReq>((provide, _singer, _account, _) => {
+  return useAbi<boolean, isSignReq>((provide, _singer, _account, _) => {
     const connect = Event__factory.connect(_.eventAddress, provide);
-    return connect.isSign(_.address);
+    return connect.isSign(_.tokenId);
   });
 }
 
