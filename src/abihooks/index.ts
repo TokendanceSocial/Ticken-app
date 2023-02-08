@@ -39,7 +39,8 @@ export interface MintReq {
 }
 export function useEventMint() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return useAbi<ContractTransaction, MintReq>((provide, _singer, account, _) => {
+  return useAbi<ContractTransaction, MintReq>((_provide, _singer, account, _) => {
+    console.log(1111, account.address, _.address, _.price);
     const connect = Event__factory.connect(_.eventAddress, _singer);
     return connect.inviteMint(account.address, _.address, {
       value: _.price
