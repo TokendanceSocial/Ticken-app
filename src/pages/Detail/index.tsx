@@ -72,7 +72,7 @@ const Detail: React.FC = () => {
     // 查看对应用户的信息状态，我进来看我的，别人进来查看别人的
     run({
       eventAddress: tid,
-      address: cid
+      address: address
     });
     setInterval(() => {
       if (data?.user?.tokenId) {
@@ -93,6 +93,7 @@ const Detail: React.FC = () => {
 
   const qrUrl =
     window.location.origin + window.location.pathname + `?mode=sign&tid=${tid}&cid=${address}`;
+  console.log(data);
   return (
     <div className={styles.container}>
       <div className={styles.header}>
