@@ -49,7 +49,7 @@ const Detail: React.FC = () => {
   const Sign = () => {
     sign({
       eventAddress: tid,
-      address: cid
+      tokenId: data?.user?.tokenId
     }).then(() => {
       Toast.show({
         icon: 'success',
@@ -163,6 +163,14 @@ const Detail: React.FC = () => {
           // 可以加入&没有登记过
           mode === 'sign' && data?.user?.isSigner && (
             <Button onClick={Sign} block color="primary" size="large">
+              Write off
+            </Button>
+          )
+        }
+        {
+          // 可以加入&没有登记过
+          mode === 'detail' && data?.user?.isSigner && (
+            <Button style={{ marginTop: '10px' }} onClick={Sign} block color="primary" size="large">
               Write off
             </Button>
           )

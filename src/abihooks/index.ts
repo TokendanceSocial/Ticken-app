@@ -52,13 +52,13 @@ export function useEventMint() {
 
 export interface SignReq {
   eventAddress: string;
-  address: string;
+  tokenId: BigNumber;
 }
 export function useSign() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return useAbi<ContractTransaction, SignReq>((_provide, _singer, _account, _) => {
     const connect = Event__factory.connect(_.eventAddress, _singer);
-    return connect.sign(_.address);
+    return connect.sign(_.tokenId);
   });
 }
 
