@@ -53,6 +53,13 @@ const List: React.FC = () => {
       <div className={styles.content}>
         {list && list.map((item, index) => <TickenCard item={item} key={index} />)}
       </div>
+      <div>
+        {(list || [])?.length === 0 ? (
+          <div style={{ textAlign: 'center', color: 'white' }}>No Ticket List</div>
+        ) : (
+          <></>
+        )}
+      </div>
     </div>
   );
 };
