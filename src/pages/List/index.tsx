@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEventList } from '@/abihooks';
 import { Toast } from 'antd-mobile';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import InviteAvatar from '../../assert/invite_avatar.png';
 import Avatar from '../../assert/invite-avatar.png';
@@ -9,11 +9,19 @@ import styles from './inde.module.scss';
 import { useAccount } from 'wagmi';
 import { handleAddress } from '@/utils';
 import TickenCard from '@/components/tickenCard';
+import { ToastHandler } from 'antd-mobile/es/components/toast';
 const List: React.FC = () => {
   const { data: list = [], run } = useEventList();
   const { address = '' } = useAccount();
+  const handler = useRef<ToastHandler>();
   useEffect(() => {
-    run();
+    handler.current = Toast.show({
+      icon: 'loading',
+      content: 'Loading…'
+    });
+    run().finally(() => {
+      handler.current?.close();
+    });
   }, []);
 
   const copyData = async () => {
