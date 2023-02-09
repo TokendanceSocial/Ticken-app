@@ -84,7 +84,8 @@ const Detail: React.FC = () => {
   }, [data?.basic?.metaURL]);
   useEffect(() => {
     const timer = setInterval(() => {
-      if (data?.user?.tokenId) {
+      console.log(444, data?.user?.tokenId);
+      if (data?.user?.tokenId && mode === 'detail') {
         isSignRun({
           eventAddress: tid,
           tokenId: data?.user?.tokenId
