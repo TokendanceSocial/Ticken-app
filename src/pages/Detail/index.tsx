@@ -85,7 +85,7 @@ const Detail: React.FC = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       console.log(444, data?.user?.tokenId);
-      if (data?.user?.tokenId && mode === 'detail') {
+      if (data?.user?.tokenId && mode !== 'mint') {
         isSignRun({
           eventAddress: tid,
           tokenId: data?.user?.tokenId
@@ -166,7 +166,7 @@ const Detail: React.FC = () => {
         )}
         {
           // 可以加入&没有登记过
-          mode === 'sign' && data?.user?.isSigner && (
+          mode === 'sign' && data?.user?.isSigner && !isSigned && (
             <Button onClick={Sign} block color="primary" size="large">
               Write off
             </Button>
@@ -211,7 +211,7 @@ const Detail: React.FC = () => {
         actions={[
           {
             key: 'confirm',
-            text: 'close'
+            text: 'Close'
           }
         ]}
       />
