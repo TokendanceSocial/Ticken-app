@@ -74,14 +74,6 @@ const Detail: React.FC = () => {
       eventAddress: tid,
       address: address
     });
-    setInterval(() => {
-      if (data?.user?.tokenId) {
-        isSignRun({
-          eventAddress: tid,
-          tokenId: data?.user?.tokenId
-        });
-      }
-    }, 500);
   }, []);
   useEffect(() => {
     const getMetaData = async () => {
@@ -90,10 +82,22 @@ const Detail: React.FC = () => {
     };
     getMetaData();
   }, [data?.basic?.metaURL]);
-
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (data?.user?.tokenId) {
+        isSignRun({
+          eventAddress: tid,
+          tokenId: data?.user?.tokenId
+        });
+      }
+    }, 500);
+    return () => {
+      clearInterval(timer);
+    };
+  }, [data]);
   const qrUrl =
     window.location.origin + window.location.pathname + `?mode=sign&tid=${tid}&cid=${address}`;
-  console.log(data);
+  console.log(222, isSigned, data);
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -167,14 +171,14 @@ const Detail: React.FC = () => {
             </Button>
           )
         }
-        {
+        {/* {
           // 可以加入&没有登记过
           mode === 'detail' && data?.user?.isSigner && (
             <Button style={{ marginTop: '10px' }} onClick={Sign} block color="primary" size="large">
               Write off
             </Button>
           )
-        }
+        } */}
         {
           // 可以加入&没有登记过
           mode === 'sign' && isSigned && (
