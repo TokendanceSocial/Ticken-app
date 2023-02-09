@@ -30,7 +30,7 @@ const List: React.FC = () => {
       });
     }
   };
-
+  console.log('List', list);
   return (
     <div className={styles.container}>
       <div className={styles.header}>
