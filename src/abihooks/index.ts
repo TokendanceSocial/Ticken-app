@@ -4,7 +4,7 @@
 import { Provider } from '@ethersproject/providers';
 import { Toast } from 'antd-mobile';
 import { useState, useCallback } from 'react';
-import { useProvider, useAccount, useSigner } from 'wagmi';
+import { useProvider, useAccount, useSigner, useNetwork } from 'wagmi';
 import { CONTRACT_ADDRESS } from '@/constanst/token';
 import { EventInfo } from '@/typechain-types/contracts/Admin';
 import { Admin__factory, Event__factory } from '@/typechain-types/index';
@@ -25,8 +25,9 @@ export function useFetchEventDetail() {
 
 export function useEventList() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { chain } = useNetwork();
   return useAbi<EventInfo.AllInfoStructOutput[], any>((provide, _singer, account) => {
-    const connect = Admin__factory.connect(CONTRACT_ADDRESS, provide);
+    const connect = Admin__factory.connect(CONTRACT_ADDRESS[chain?.id], provide);
     return connect.eventsForUser(account.address);
   });
 }

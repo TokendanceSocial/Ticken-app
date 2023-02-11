@@ -7,6 +7,8 @@ import avatar from '../../assert/avatar.png';
 import styles from './index.module.scss';
 import { useAccount, useConnect } from 'wagmi';
 import { useNavigate } from 'react-router-dom';
+import Connect from '@/components/ConnetButton';
+
 const Login: React.FC = () => {
   const { address, isDisconnected } = useAccount();
   const { connect, connectors } = useConnect();
@@ -55,11 +57,7 @@ const Login: React.FC = () => {
           </li>
         </ul>
       </div>
-      <div
-        className={styles.btn}
-        onClick={() => {
-          setLoginVisiable(true);
-        }}></div>
+      <Connect />
       <Modal
         visible={loginVisiable}
         content={

@@ -12,7 +12,7 @@ function isAuthenticated(address) {
 // eslint-disable-next-line react/prop-types, @typescript-eslint/no-unused-vars
 const ProtectedRoute = ({ children }) => {
   const { address } = useAccount();
-
+  // todo 登陆后路由问题
   if (!isAuthenticated(address)) {
     return <Navigate to="/login" />;
   }
